@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStreamReader; 
 import java.net.Socket; 
 import java.net.UnknownHostException;
-import java.util.Scanner;
-import java.util.Scannercanner;
 
 public class Sensor {
     public static void main(String[] args) {
@@ -25,16 +23,34 @@ public class Sensor {
 
         try (Socket deviceSocket = new Socket(hostName, portNumber); 
         DataOutputStream out = new DataOutputStream(deviceSocket.getOutputStream()); 
-        BufferedReader in = new BufferedReader(new InputStreamReader(deviceSocket.getInputStream())))  { 
+        BufferedReader stdIn = new BufferedReader(new InputStreamReader(deviceSocket.getInputStream())))  { 
         // we will describe this code below 
-            // String userInput;
-            // Scanner scanner = new Scanner(System.in);
-            // while ((userInput = scanner.nextLine()) != null) {
-            //     System.out.print("Sensor " + type + " received " + fromServer);
-            //     System.out.println(userInput);
-            //     System.out.println("echo: " + in.readLine());
-            // }
-            // scanner.close();
+            String fromServer;
+            while ((fromServer = stdIn.readLine()) != null) {
+                System.out.print("Sensor " + type + " received " + fromServer);
+                if(fromServer == "ID") {
+                    out.writeInt(type);
+                }
+                if(fromServer == "VAL") {
+                    if(Math.random() <= 0.5) {
+                        value += 1;
+                    }
+                    else {
+                        value -= 1;
+                    }
+                    out.writeDouble(value);
+                }
+                if(fromServer == "SETNORM") {
+                    if(type == Observable.TEMP_ZONE1 || type == Observable.TEMP_ZONE2) {
+                        value = Observable.NORMAL_TEMP;
+                    }
+                    else {
+                        value = Observable.NORMAL_HUMIDITY;
+                    }
+                    out.writeDouble(value);
+                }
+                System.out.println(". Value = " + value);
+            }
         } catch (UnknownHostException e) { 
             e.printStackTrace(); 
             } catch (IOException e) {  e.printStackTrace(); 
