@@ -40,7 +40,18 @@ public class HVACObserver {
                     }
                 }
                 if(observerId == 1) {
-
+                    if(values[Observable.TEMP_ZONE2] < Observable.NORMAL_TEMP) {
+                        System.out.println("Heater on in Zone 1");
+                    }
+                    if(values[Observable.TEMP_ZONE2] > Observable.NORMAL_TEMP) {
+                        System.out.println("A/C on in Zone 1");
+                    }
+                    if(values[Observable.HUMIDITY_ZONE2] < Observable.NORMAL_HUMIDITY) {
+                        System.out.println("Humidifier on in Zone 1");
+                    }
+                    if(values[Observable.HUMIDITY_ZONE2] > Observable.NORMAL_HUMIDITY) {
+                        System.out.println("Dehumidifier on in Zone 1");
+                    }
                 }
             }
         }
