@@ -1,13 +1,13 @@
-import java.io.IOException; 
-import java.io.ObjectInputStream; 
-import java.net.Socket; 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.net.Socket;
 import java.net.UnknownHostException; 
 import java.util.Arrays;
 
 public class HVACObserver {
     public static void main(String[] args) {
         if(args.length != 3) { 
-            System.out.println("Usage is: "        + "java HVACObserver <observer id> <host name> <observer port number"); 
+            System.out.println("Usage is: " + "java HVACObserver <observer id> <host name> <observer port number"); 
             System.exit(1); 
          } 
 
@@ -25,7 +25,7 @@ public class HVACObserver {
                 double[] values = (double[])in.readObject(); 
                 System.out.println("Observer " + observerId + " " + Arrays.toString(values)); 
 
-                if(observerId == 0) {
+                if(observerId == Observable.TEMP_ZONE1) {
                     if(values[Observable.TEMP_ZONE1] < Observable.NORMAL_TEMP) {
                         System.out.println("Heater on in Zone 1");
                     }
@@ -39,7 +39,7 @@ public class HVACObserver {
                         System.out.println("Dehumidifier on in Zone 1");
                     }
                 }
-                if(observerId == 1) {
+                if(observerId == Observable.TEMP_ZONE2) {
                     if(values[Observable.TEMP_ZONE2] < Observable.NORMAL_TEMP) {
                         System.out.println("Heater on in Zone 2");
                     }

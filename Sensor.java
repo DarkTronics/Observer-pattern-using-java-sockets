@@ -1,7 +1,7 @@
-import java.io.BufferedReader; 
-import java.io.DataOutputStream; 
-import java.io.IOException; 
-import java.io.InputStreamReader; 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket; 
 import java.net.UnknownHostException;
 
@@ -28,10 +28,10 @@ public class Sensor {
             String fromServer;
             while ((fromServer = stdIn.readLine()) != null) {
                 System.out.print("Sensor " + type + " received " + fromServer);
-                if(fromServer == "ID") {
+                if(fromServer.equals("ID?")) {
                     out.writeInt(type);
                 }
-                if(fromServer == "VAL") {
+                if(fromServer.equals("VAL?")) {
                     if(Math.random() <= 0.5) {
                         value += 1;
                     }
@@ -40,7 +40,7 @@ public class Sensor {
                     }
                     out.writeDouble(value);
                 }
-                if(fromServer == "SETNORM") {
+                if(fromServer.equals("SETNORM")) {
                     if(type == Observable.TEMP_ZONE1 || type == Observable.TEMP_ZONE2) {
                         value = Observable.NORMAL_TEMP;
                     }
@@ -53,7 +53,10 @@ public class Sensor {
             }
         } catch (UnknownHostException e) { 
             e.printStackTrace(); 
-            } catch (IOException e) {  e.printStackTrace(); 
+        } catch (IOException e) {  
+            System.out.println("Exception caught when trying to listen on port "
+                + portNumber + " or listening for a connection");
+            System.out.println(e.getMessage());
         }
     }
 }
